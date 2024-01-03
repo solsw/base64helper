@@ -6,9 +6,9 @@ import (
 	"unicode/utf8"
 )
 
-// DecodeStringToUTF8String returns the string represented by the base64 string 's'.
-// Decoded 's' must represent a valid UTF-8-encoded string.
-func DecodeStringToUTF8String(enc *base64.Encoding, s string) (string, error) {
+// DecodeStringToString returns the string represented by the base64 string 's'.
+// Decoded from base64 's' must consist entirely of valid UTF-8-encoded runes.
+func DecodeStringToString(enc *base64.Encoding, s string) (string, error) {
 	bb, err := enc.DecodeString(s)
 	if err != nil {
 		return "", err

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDecodeStringToUTF8String(t *testing.T) {
+func TestDecodeStringToString(t *testing.T) {
 	type args struct {
 		enc *base64.Encoding
 		s   string
@@ -31,13 +31,13 @@ func TestDecodeStringToUTF8String(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := DecodeStringToUTF8String(tt.args.enc, tt.args.s)
+			got, err := DecodeStringToString(tt.args.enc, tt.args.s)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("DecodeStringToUTF8String() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("DecodeStringToString() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got != tt.want {
-				t.Errorf("DecodeStringToUTF8String() = %v, want %v", got, tt.want)
+				t.Errorf("DecodeStringToString() = %v, want %v", got, tt.want)
 			}
 		})
 	}
