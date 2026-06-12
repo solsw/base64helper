@@ -1,4 +1,5 @@
 # base64helper
 [![Go Reference](https://pkg.go.dev/badge/github.com/solsw/base64helper.svg)](https://pkg.go.dev/github.com/solsw/base64helper)
+[![Documentation](https://img.shields.io/badge/docs-github.io-green)](https://solsw.github.io/base64helper/)
 
 Helpers for Go's [encoding/base64](https://pkg.go.dev/encoding/base64) package.
