@@ -18,12 +18,13 @@ func TestDecodeStringToString(t *testing.T) {
 		wantErr   bool
 		wantErrIs error
 	}{
-		{name: "error 1",
+		{name: "malformed base64",
 			args: args{
 				enc: base64.StdEncoding,
 				s:   "qwerty",
 			},
-			wantErr: true,
+			wantErr:   true,
+			wantErrIs: base64.CorruptInputError(4),
 		},
 		{name: "ErrInvalidUTF8",
 			args: args{
@@ -35,6 +36,10 @@ func TestDecodeStringToString(t *testing.T) {
 		},
 		{name: "non-nil enc",
 			args: args{enc: base64.StdEncoding, s: "MQ=="},
+			want: "1",
+		},
+		{name: "raw standard encoding",
+			args: args{enc: base64.RawStdEncoding, s: "MQ"},
 			want: "1",
 		},
 		{name: "nil enc",

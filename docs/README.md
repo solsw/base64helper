@@ -22,11 +22,11 @@ import "github.com/solsw/base64helper"
 func DecodeStringToString(enc *base64.Encoding, s string) (string, error)
 ```
 
-Returns the string represented by the `enc`-encoded base64 string `s`.
+Decodes `s` using `enc` and returns the decoded text as a UTF-8 string. On error, it returns an empty string.
 
-- If `enc` is `nil`, [base64.StdEncoding](https://pkg.go.dev/encoding/base64#pkg-variables) is used.
-- The bytes decoded from `s` must consist entirely of valid UTF-8-encoded runes; otherwise `ErrInvalidUTF8` is returned.
-- If `s` is not valid base64, the error from the underlying [Encoding.DecodeString](https://pkg.go.dev/encoding/base64#Encoding.DecodeString) is returned.
+- Pass `nil` for the standard padded encoding, or `base64.RawStdEncoding` for the standard alphabet without padding.
+- For malformed input, the function returns the underlying decoder's `base64.CorruptInputError`. Its value is the zero-based byte offset reported by the decoder.
+- If decoding succeeds but the bytes contain invalid UTF-8, the function returns `ErrInvalidUTF8`.
 
 ### ErrInvalidUTF8
 
@@ -42,6 +42,7 @@ Returned when the decoded bytes are not valid UTF-8. Test for it with [errors.Is
 package main
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 
@@ -55,6 +56,18 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(s) // привет
+
+	s, err = base64helper.DecodeStringToString(base64.RawStdEncoding, "MQ")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(s) // 1
+
+	_, err = base64helper.DecodeStringToString(nil, "qwerty")
+	var offset base64.CorruptInputError
+	if errors.As(err, &offset) {
+		fmt.Println(int64(offset)) // 4
+	}
 
 	// Decoded bytes must be valid UTF-8.
 	_, err = base64helper.DecodeStringToString(nil, "//79")
